@@ -2,6 +2,8 @@ import os
 from util import *
 from collections import OrderedDict
 import pandas as pd
+from imblearn.over_sampling import RandomOverSampler
+import numpy as np
 
 def match_images_with_masks(dataset_path): 
     
@@ -9,7 +11,6 @@ def match_images_with_masks(dataset_path):
     current_dict = None
     
     for filename in os.listdir(dataset_path): 
-        print(filename)
         if filename.find("mask") == -1:
 
             if current_dict != None:
@@ -31,7 +32,24 @@ def make_dataset_csv():
     malig_df = match_images_with_masks(MALIGNANT_DATA_PATH)
     normal_df = match_images_with_masks(NORMAL_DATA_PATH)
 
-    pd.concat([benign_df, malig_df, normal_df], ignore_index = True).to_csv(DATA_CSV_PATH, index=False)
+    return pd.concat([benign_df, malig_df, normal_df], ignore_index = True)
+
+
+def balance_dataset(dataset_df):
+    oversampler = RandomOverSampler(random_state=0)
+    col_names = dataset_df.columns
+
+    labels = dataset_df.iloc[:, CLASS_NAME_COL].to_numpy()
+    info = dataset_df.iloc[:, (CLASS_NAME_COL+1):].to_numpy()
+    os_info, os_labels = oversampler.fit_resample(info, labels)
+    
+    new_data_df = pd.DataFrame(columns=col_names)
+    new_data_df.iloc[:, CLASS_NAME_COL] = os_labels
+    new_data_df.iloc[:, (CLASS_NAME_COL + 1):] = os_info
+
+    return new_data_df
 
 if __name__ == "__main__": 
-    make_dataset_csv()
+    dataset_df = make_dataset_csv()
+    dataset_df = balance_dataset(dataset_df)
+    dataset_df.to_csv(DATA_CSV_PATH, index = False)

@@ -1,6 +1,7 @@
 #Custom
 /Datasets
 /Results
+/Models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
