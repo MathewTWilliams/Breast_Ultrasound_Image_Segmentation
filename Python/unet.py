@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import os 
 
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Concatenate, Input
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Concatenate, Input, ZeroPadding2D
 from tensorflow.keras.layers import Cropping2D, Conv2DTranspose, BatchNormalization
 from tensorflow.keras.optimizers import SGD
 from tensorflow.keras.utils import to_categorical
@@ -123,4 +123,5 @@ def load_unet_model():
 
 
 if __name__ == "__main__": 
-    pass
+    model = define_model()
+    model.summary()
