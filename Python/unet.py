@@ -65,7 +65,7 @@ def define_model():
 
     ####Decoders####
     cnvt1 = Conv2DTranspose(filters = 512, activation = 'relu', kernel_size = (2,2), strides = (2,2), padding = "valid")(bn10)
-    crop1 = Cropping2D(cropping=(4,4))(cnv8)
+    crop1 = Cropping2D(cropping=((5,4), (5,4)))(cnv8)
     con1 = Concatenate(axis = -1)([cnvt1, crop1])
 
     cnv11 = Conv2D(filters = 512, activation = "relu", kernel_size = (3,3), padding="valid",  strides = (1,1))(con1)
@@ -75,7 +75,7 @@ def define_model():
     bn12 = BatchNormalization()(cnv12)
 
     cnvt2 = Conv2DTranspose(filters = 256, activation = 'relu', kernel_size = (2,2), strides = (2,2), padding = "valid")(bn12)
-    crop2 = Cropping2D(cropping = (16,16))(cnv6)
+    crop2 = Cropping2D(cropping = (17,17))(cnv6)
     con2 = Concatenate(axis = -1)([cnvt2, crop2])
 
     cnv13 = Conv2D(filters = 256, activation = "relu", kernel_size = (3,3), padding="valid",  strides = (1,1))(con2)

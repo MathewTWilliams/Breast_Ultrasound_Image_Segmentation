@@ -2,9 +2,9 @@ import cv2
 import statistics
 import matplotlib.pyplot as plt
 from util import *
+import numpy as np
 
-if __name__ == "__main__":
-
+def run_stats(): 
     widths = []
     heights = []
     aspect_ratios = []
@@ -38,7 +38,22 @@ if __name__ == "__main__":
     print("Aspect Ratio median: {}".format(statistics.median(aspect_ratios)))
 
 
-    plt.boxplot([widths, heights], labels=["Widths", "Heights"])
+def show_all_segments():
+    #results: favor top and right for cropping
+    final_mask = np.zeros(shape = (TARGET_HEIGHT, TARGET_WIDTH), dtype=np.uint8)
+    for dir in [BENIGN_DATA_PATH, MALIGNANT_DATA_PATH, NORMAL_DATA_PATH]: 
+        for file in os.listdir(dir): 
+            if file.find("mask") != -1:
+                mask = cv2.imread(os.path.join(dir, file), cv2.IMREAD_GRAYSCALE)
+                mask = cv2.resize(mask, (TARGET_HEIGHT, TARGET_WIDTH))
+                cv2.add(final_mask, mask, final_mask) 
+                    
+
+    plt.imshow(final_mask, cmap=plt.get_cmap("gray"))
     plt.show()
 
 
+
+if __name__ == "__main__":
+    #run_stats()
+    show_all_segments()
