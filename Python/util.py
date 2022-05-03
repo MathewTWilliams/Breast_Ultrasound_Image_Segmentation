@@ -8,16 +8,16 @@ MALIGNANT_DATA_PATH = os.path.join(DATA_SETS_PATH, "malignant")
 NORMAL_DATA_PATH = os.path.join(DATA_SETS_PATH, "normal")
 DATA_CSV_PATH = os.path.join(DATA_SETS_PATH, "complete_datset.csv")
 RESULTS_DATA_PATH = os.path.join(ABS_CWD, "Results")
-
-
-
 MODELS_DATA_PATH = os.path.join(ABS_CWD, "Models")
 
 
 
-# for resizing
-TARGET_WIDTH = 550
-TARGET_HEIGHT = 550
+# for resizing for imput
+TARGET_WIDTH = 580
+TARGET_HEIGHT = 580
+BORDER_PADDING_X = 92
+BORDER_PADDING_Y = 92     
+
 
 
 #Data frame column indicies
