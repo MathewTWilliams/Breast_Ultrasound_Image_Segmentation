@@ -20,7 +20,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.callbacks import EarlyStopping
 
 
-def define_model(): 
+def define_unet_model(): 
     
     #inputs
     inputs = Input(shape = (764, 764, 1))
@@ -111,13 +111,37 @@ def define_model():
 
 
 def train_unet_model(): 
-    pass
+    base_imgs, mask_imgs, _ = load_images_from_dataset_csv(segmentation=True)
 
+    x_train, x_valid, y_train, y_valid = train_test_split(base_imgs, mask_imgs, test_size=TEST_SIZE + VALID_SIZE, random_state=42)
+    x_valid, x_test, y_valid, y_test = train_test_split(x_valid, y_valid, test_size=0.5, random_state=42)
+
+    model = define_unet_model()
+    model.summary()
+
+    stop = EarlyStopping(monitor = "val_loss", mode = "min", patience = 5)
+
+    training_hist = model.fit(x_train, y_train, epochs = N_EPOCHS, batch_size = BATCH_SIZE, \
+       validation_data = (x_valid, y_valid), verbose = 1, callbacks = [stop])
+
+    plt.plot(training_hist.history["val_loss"], label="Validation")
+    plt.plot(training_hist.history["loss"], label = "Training")
+    plt.legend()
+    plt.show()
+
+    predictions = model.predict(x_test, batch_size=BATCH_SIZE)
+    predictions = np.argmax(predictions, axis = -1)
+    class_report = classification_report(y_test, predictions, output_dict=True)
+    class_report["Model"] = "AlexNet Backbone"
+
+    save_results(class_report)
+
+    file_name = "Unet_{}.h5".format(len(os.listdir(MODELS_DATA_PATH)) + 1)
+    model.save(os.path.join(MODELS_DATA_PATH, file_name))
 
 def load_unet_model(): 
     pass
 
 
 if __name__ == "__main__": 
-    model = define_model()
-    model.summary()
+    train_unet_model()
