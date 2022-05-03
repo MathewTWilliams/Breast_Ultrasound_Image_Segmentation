@@ -24,11 +24,9 @@ def load_images_from_dataset_csv():
         base_img = cv2.imread(os.path.join(DIR_PATH_MAP[img_class], filename), cv2.IMREAD_GRAYSCALE)
         base_img = cv2.resize(base_img, (TARGET_HEIGHT, TARGET_WIDTH))
         
-        #TODO
         labels_list[i] = LABEL_MAP[img_class]
         images_list[i] = np.reshape(base_img, newshape=(TARGET_HEIGHT, TARGET_WIDTH, 1))
-        #
-
+    
         mask_names = [mask_1, mask_2, mask_3]
         mask_names = [mask for mask in mask_names if not pd.isna(mask)]
         cur_mask_images = []
@@ -45,10 +43,9 @@ def load_images_from_dataset_csv():
             for i in range(1, len(cur_mask_images)): 
                 cv2.add(final_mask_image, cur_mask_images[i], final_mask_image)
 
-        #TODO
+        
         masks_list[i] = np.reshape(final_mask_image, newshape=(TARGET_HEIGHT, TARGET_WIDTH, 1))
-        #
-
+        
     return (images_list / 255.0), \
             (masks_list / 255.0), \
             labels_list

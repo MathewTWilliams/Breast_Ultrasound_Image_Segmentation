@@ -35,6 +35,9 @@ N_TARGET_SAMPLES = 436
 N_EPOCHS = 100
 BATCH_SIZE = 8
 
+N_CLASSES = 3
+
+
 DIR_PATH_MAP = {
     "benign" : BENIGN_DATA_PATH,
     "malignant" : MALIGNANT_DATA_PATH,

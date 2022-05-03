@@ -3,7 +3,6 @@ from util import *
 from collections import OrderedDict
 import pandas as pd
 from imblearn.over_sampling import RandomOverSampler
-import numpy as np
 
 def match_images_with_masks(dataset_path): 
     
