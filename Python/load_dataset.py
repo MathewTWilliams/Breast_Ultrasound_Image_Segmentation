@@ -9,14 +9,12 @@ from util import *
 def load_images_from_dataset_csv(segmentation = False):
     dataset_df = pd.read_csv(DATA_CSV_PATH, index_col=False)
 
-    input_height = TARGET_HEIGHT
-    input_width = TARGET_WIDTH
-    if segmentation:
-        input_height = TARGET_HEIGHT + (2 * BORDER_PADDING_Y)
-        input_width = TARGET_WIDTH = (2 * BORDER_PADDING_X)
+    input_height = SEGMENT_INPUT_HEIGHT if segmentation else CLASSIFY_INPUT_HEIGHT
+    input_width = SEGMENT_INPUT_WIDTH if segmentation else CLASSIFY_INPUT_WIDTH
+
 
     images_list = np.empty(shape=(len(dataset_df.index.values), input_height, input_width, 1))
-    masks_list = np.empty(shape=(len(dataset_df.index.values), TARGET_HEIGHT, TARGET_WIDTH, 1))
+    masks_list = np.empty(shape=(len(dataset_df.index.values), CLASSIFY_INPUT_HEIGHT, CLASSIFY_INPUT_HEIGHT, 1))
     labels_list = np.empty(shape=(len(dataset_df.index.values),))
 
     for i, row_ds in dataset_df.iterrows():
@@ -29,12 +27,7 @@ def load_images_from_dataset_csv(segmentation = False):
 
         base_img = cv2.imread(os.path.join(DIR_PATH_MAP[img_class], filename), cv2.IMREAD_GRAYSCALE)
         #resize to target height and width
-        base_img = cv2.resize(base_img, (TARGET_HEIGHT, TARGET_WIDTH))
-
-        if segmentation:
-            #pad image so output segmentation is the same size as our input before padding
-            base_img = cv2.copyMakeBorder(base_img, BORDER_PADDING_Y, BORDER_PADDING_Y, \
-                        BORDER_PADDING_X, BORDER_PADDING_X, cv2.BORDER_CONSTANT, value = [0,0,0])
+        base_img = cv2.resize(base_img, (input_height, input_width))
         
         labels_list[i] = LABEL_MAP[img_class]
         images_list[i] = np.reshape(base_img, newshape=(input_height, input_width, 1))
@@ -45,7 +38,7 @@ def load_images_from_dataset_csv(segmentation = False):
 
         for mask in mask_names: 
             mask_image = cv2.imread(os.path.join(DIR_PATH_MAP[img_class], mask), cv2.IMREAD_GRAYSCALE)
-            mask_image = cv2.resize(mask_image, (TARGET_HEIGHT, TARGET_WIDTH))
+            mask_image = cv2.resize(mask_image, (CLASSIFY_INPUT_HEIGHT, CLASSIFY_INPUT_WIDTH))
 
             cur_mask_images.append(mask_image)
 
@@ -56,7 +49,7 @@ def load_images_from_dataset_csv(segmentation = False):
                 cv2.add(final_mask_image, cur_mask_images[i], final_mask_image)
 
         
-        masks_list[i] = np.reshape(final_mask_image, newshape=(TARGET_HEIGHT, TARGET_WIDTH, 1))
+        masks_list[i] = np.reshape(final_mask_image, newshape=(CLASSIFY_INPUT_HEIGHT, CLASSIFY_INPUT_WIDTH, 1))
         
     return (images_list / 255.0), \
             (masks_list / 255.0), \

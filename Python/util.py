@@ -13,10 +13,10 @@ MODELS_DATA_PATH = os.path.join(ABS_CWD, "Models")
 
 
 # for resizing for imput
-TARGET_WIDTH = 580
-TARGET_HEIGHT = 580
-BORDER_PADDING_X = 92
-BORDER_PADDING_Y = 92     
+SEGMENT_INPUT_WIDTH = 572
+SEGMENT_INPUT_HEIGHT = 572
+CLASSIFY_INPUT_WIDTH = 388 #484
+CLASSIFY_INPUT_HEIGHT = 388 #484
 
 
 
@@ -33,7 +33,8 @@ VALID_SIZE = 0.10
 N_TARGET_SAMPLES = 436
 
 N_EPOCHS = 100
-BATCH_SIZE = 8
+CLASS_BATCH_SIZE = 4
+SEG_BATCH_SIZE = 2
 
 N_CLASSES = 3
 
@@ -48,6 +49,12 @@ LABEL_MAP = {
     "normal" : 0,
     "benign" : 1,
     "malignant" : 2,
+}
+
+INVERSE_LABEL_MAP =  {
+    0 : "normal",
+    1 : "benign",
+    2 : "malignant",
 }
 
 

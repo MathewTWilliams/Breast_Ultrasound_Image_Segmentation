@@ -37,15 +37,17 @@ def run_stats():
     print("Aspect Ratio mean: {}".format(statistics.mean(aspect_ratios)))
     print("Aspect Ratio median: {}".format(statistics.median(aspect_ratios)))
 
+    plt.boxplot([widths, heights], labels=["Widths", "Heights"])
+    plt.show()
 
 def show_all_segments():
     #results: favor top and right for cropping
-    final_mask = np.zeros(shape = (TARGET_HEIGHT, TARGET_WIDTH), dtype=np.uint8)
+    final_mask = np.zeros(shape = (SEGMENT_INPUT_HEIGHT, SEGMENT_INPUT_WIDTH), dtype=np.uint8)
     for dir in [BENIGN_DATA_PATH, MALIGNANT_DATA_PATH, NORMAL_DATA_PATH]: 
         for file in os.listdir(dir): 
             if file.find("mask") != -1:
                 mask = cv2.imread(os.path.join(dir, file), cv2.IMREAD_GRAYSCALE)
-                mask = cv2.resize(mask, (TARGET_HEIGHT, TARGET_WIDTH))
+                mask = cv2.resize(mask, (SEGMENT_INPUT_HEIGHT, SEGMENT_INPUT_WIDTH))
                 cv2.add(final_mask, mask, final_mask) 
                     
 
@@ -55,5 +57,5 @@ def show_all_segments():
 
 
 if __name__ == "__main__":
-    #run_stats()
-    show_all_segments()
+    run_stats()
+    #show_all_segments()
