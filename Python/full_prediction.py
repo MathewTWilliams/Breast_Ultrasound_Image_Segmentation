@@ -1,3 +1,5 @@
+# Author: Matt Williams
+# Version: 5/5/2022
 from util import CLASS_BATCH_SIZE, SEG_BATCH_SIZE, INVERSE_LABEL_MAP
 from load_dataset import load_images_from_dataset_csv
 from unet import load_unet_model
@@ -9,7 +11,8 @@ from sklearn.metrics import classification_report
 from save_results import save_results
 
 
-def run_predictions(): 
+def run_predictions():
+    '''A method that runs the full segmentation and classification predicts using the two neural networks'''
     base_imgs, mask_imgs, labels = load_images_from_dataset_csv(segmentation=True)
 
     base_imgs, mask_imgs, labels = shuffle(base_imgs, mask_imgs, labels)

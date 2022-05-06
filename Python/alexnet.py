@@ -1,3 +1,7 @@
+# Author: Matt Williams
+# Version: 5/5/2022 
+
+
 import tensorflow as tf
 from util import *
 from load_dataset import load_images_from_dataset_csv
@@ -16,8 +20,9 @@ from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.losses import CategoricalCrossentropy
 
 
-def define_backbone_model():
-
+def define_alexnet_model():
+    """Defines the Edited AlexNet model for classification"""
+    
     model = Sequential()
 
     #CNN specific layers
@@ -73,7 +78,8 @@ def define_backbone_model():
     return model
 
 
-def train_backbone_cnn():
+def train_alexnet():
+    '''Train AlexNet on Training and Validation sets. Saves results on test set and saves the model weights.'''
     _, mask_imgs, labels = load_images_from_dataset_csv()
 
     x_train, x_valid, y_train, y_valid = train_test_split(mask_imgs, labels, test_size=TEST_SIZE + VALID_SIZE, random_state=42)
@@ -83,7 +89,7 @@ def train_backbone_cnn():
     y_train = to_categorical(y_train)
     y_valid = to_categorical(y_valid)
 
-    model = define_backbone_model()
+    model = define_alexnet_model()
     model.summary()
 
     stop = EarlyStopping(monitor = "val_loss", mode = "min", patience = 5, restore_best_weights = True)
@@ -109,9 +115,10 @@ def train_backbone_cnn():
 
     
 def load_alexnet_model(): 
+    '''Load a new AlexNet model with saved weights from previous training sessions.'''
     file_path = os.path.join(MODELS_DATA_PATH, "AlexNet_Backbone_3.h5")
 
-    model = define_backbone_model()
+    model = define_alexnet_model()
     model.load_weights(file_path)
 
     return model
@@ -121,8 +128,7 @@ def load_alexnet_model():
 
 if __name__ == "__main__": 
     
-    #train_backbone_cnn()
+    train_alexnet()
 
     #model = load_alexnet_model()
 
-    pass

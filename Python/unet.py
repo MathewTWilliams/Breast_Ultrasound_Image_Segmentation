@@ -1,3 +1,5 @@
+# Author: Matt Williams
+# Version: 5/5/2022
 # references: 
 # - https://medium.com/analytics-vidhya/training-u-net-from-scratch-using-tensorflow2-0-fad541e2eaf1
 # - https://arxiv.org/pdf/1505.04597.pdf
@@ -23,12 +25,15 @@ from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.metrics import MeanIoU
 
 def calc_std_dev(kernel_x, kernel_y, filters):
-    num = 2/ (kernel_x * kernel_y * filters)
+    '''A method used to calculate the value of the standard deviation for a layer that is 
+    initialized with the Gaussian Distribution based on the kernel size and number of filters
+    coming in from the previous layer. The equation given by Unet paper.'''
+    num = 2 / (kernel_x * kernel_y * filters)
     return math.sqrt(num)
 
 
 def define_unet_model(): 
-    
+    '''Returns a model with the Unet architecture'''
     #inputs
     inputs = Input(shape = (SEGMENT_INPUT_HEIGHT, SEGMENT_INPUT_WIDTH, 1))
 
@@ -147,6 +152,7 @@ def define_unet_model():
 
 
 def train_unet_model(): 
+    '''Train Unet on the training set. Saves the model weights for later use.'''
     base_imgs, mask_imgs, _ = load_images_from_dataset_csv(segmentation=True)
 
     x_train, x_valid, y_train, y_valid = train_test_split(base_imgs, mask_imgs, test_size=TEST_SIZE + VALID_SIZE, random_state=42)

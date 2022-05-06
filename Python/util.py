@@ -1,3 +1,6 @@
+# Author: Matt Williams
+# Version: 5/5/2022
+
 import os
 import pandas as pd
 ABS_CWD = os.path.abspath(os.getcwd())

@@ -1,10 +1,14 @@
+# Matt Williams
+# Version: 5/5/2022
+
 import cv2
 import statistics
 import matplotlib.pyplot as plt
 from util import *
 import numpy as np
 
-def run_stats(): 
+def run_stats():
+    """A method that does a statistical analysis of the image width and heights in the data set""" 
     widths = []
     heights = []
     aspect_ratios = []
@@ -41,7 +45,8 @@ def run_stats():
     plt.show()
 
 def show_all_segments():
-    #results: favor top and right for cropping
+    """Outputs and image of all segmentations combined together. Was used to help make decisions on image cropping
+    in the segmentation model."""
     final_mask = np.zeros(shape = (SEGMENT_INPUT_HEIGHT, SEGMENT_INPUT_WIDTH), dtype=np.uint8)
     for dir in [BENIGN_DATA_PATH, MALIGNANT_DATA_PATH, NORMAL_DATA_PATH]: 
         for file in os.listdir(dir): 

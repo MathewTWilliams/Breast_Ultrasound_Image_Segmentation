@@ -1,3 +1,5 @@
+# Author: Matt Williams
+# Version: 5/5/2022
 import os
 from util import *
 from collections import OrderedDict
@@ -5,7 +7,9 @@ import pandas as pd
 from imblearn.over_sampling import RandomOverSampler
 
 def match_images_with_masks(dataset_path): 
-    
+    '''Given a file path to a dataset sub directory, return a Pandas Data Frame.
+    Each row in the data frame contains: the class name, the file name of the base image, and
+    the filenames of the associated segmented images/masks. '''
     dict_list = []
     current_dict = None
     
@@ -26,7 +30,8 @@ def match_images_with_masks(dataset_path):
 
 
 def make_dataset_csv():
-    
+    '''Using the method above, this method constructs a large Pandas Data Frame that contains the rows
+    of each Dataframe associated with a dataset sub directory. '''
     benign_df = match_images_with_masks(BENIGN_DATA_PATH)
     malig_df = match_images_with_masks(MALIGNANT_DATA_PATH)
     normal_df = match_images_with_masks(NORMAL_DATA_PATH)
@@ -35,6 +40,7 @@ def make_dataset_csv():
 
 
 def balance_dataset(dataset_df):
+    '''Given a Pandas Data Frame, use a 3rd party Library to perform oversamples on our dataset'''
     oversampler = RandomOverSampler(random_state=0)
     col_names = dataset_df.columns
 

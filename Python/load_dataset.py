@@ -1,4 +1,5 @@
-from email.mime import base
+# Author: Matt Williams
+# Version: 5/5/2022
 import os
 from matplotlib import pyplot as plt
 import pandas as pd
@@ -7,6 +8,7 @@ import cv2
 from util import *
 
 def load_images_from_dataset_csv(segmentation = False):
+    '''Loads in the dataset csv and reads in all the images with their associated labels and mask images'''
     dataset_df = pd.read_csv(DATA_CSV_PATH, index_col=False)
 
     input_height = SEGMENT_INPUT_HEIGHT if segmentation else CLASSIFY_INPUT_HEIGHT

@@ -1,3 +1,6 @@
+# Author: Matt Williams
+# Version: 5/5/2022
+
 import json
 import os
 from util import *
@@ -5,6 +8,7 @@ from util import *
 
 
 def save_results(dict):
+    '''A Simple method to save the json results files.'''
     if not os.path.exists(RESULTS_DATA_PATH):
         os.mkdir(RESULTS_DATA_PATH)
 
