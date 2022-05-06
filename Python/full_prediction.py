@@ -9,9 +9,6 @@ from sklearn.metrics import classification_report
 from save_results import save_results
 
 
-from tensorflow.keras.utils import to_categorical
-
-
 def run_predictions(): 
     base_imgs, mask_imgs, labels = load_images_from_dataset_csv(segmentation=True)
 
@@ -33,10 +30,13 @@ def run_predictions():
     save_results(class_report)
 
     for i, seg_pred in enumerate(seg_predictions):
-        percentages = "Percentages: Normal: {}, Benign: {}, Malignant: {}" \
-           .format(round(cls_predictions[i][0],5), round(cls_predictions[i][1], 5), round(cls_predictions[i][2], 5))
+        print("------------------------------------------")
+        print("Percentages:")
+        print("Normal: {}".format(cls_predictions[i][0]))
+        print("Benign: {}".format(cls_predictions[i][1]))
+        print("Malignant: {}".format(cls_predictions[i][2]))
+
         plt.subplot(1,3,1)
-        plt.title(percentages)
         plt.imshow(base_imgs[i], cmap=plt.get_cmap("gray"))
         plt.subplot(1,3,2)
         plt.title("Actual: {}".format(INVERSE_LABEL_MAP[labels[i]]))
